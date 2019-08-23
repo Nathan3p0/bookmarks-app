@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
+import { Route } from 'react-router-dom'
 import AddBookmark from './AddBookmark/AddBookmark';
 import BookmarkList from './BookmarkList/BookmarkList';
 import Nav from './Nav/Nav';
 import config from './config';
 import './App.css';
+import EditBookmark from './EditBookmark/EditBookmark';
 
 const bookmarks = [
   // {
@@ -50,7 +52,7 @@ class App extends Component {
 
   addBookmark = bookmark => {
     this.setState({
-      bookmarks: [ ...this.state.bookmarks, bookmark ],
+      bookmarks: [...this.state.bookmarks, bookmark],
     })
   }
 
@@ -79,17 +81,9 @@ class App extends Component {
         <h1>Bookmarks!</h1>
         <Nav clickPage={this.changePage} />
         <div className='content' aria-live='polite'>
-          {page === 'add' && (
-            <AddBookmark
-              onAddBookmark={this.addBookmark}
-              onClickCancel={() => this.changePage('list')}
-            />
-          )}
-          {page === 'list' && (
-            <BookmarkList
-              bookmarks={bookmarks}
-            />
-          )}
+          <Route exact path='/' render={(props) => <BookmarkList bookmarks={bookmarks} />} />
+          <Route path='/add-bookmark' render={(props) => <AddBookmark onAddBookmark={this.addBookmark} />} />
+          <Route path='/edit/:bookmarkId' component={EditBookmark} />
         </div>
       </main>
     );

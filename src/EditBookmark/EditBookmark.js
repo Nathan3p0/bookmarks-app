@@ -41,14 +41,55 @@ class EditBookmark extends Component {
                     error: error
                 })
             })
-
     }
+
+    handleSubmit = (event) => {
+        event.preventDefault();
+
+        const bookmark = {
+            id: this.state.id,
+            title: this.state.title,
+            url: this.state.url,
+            description: this.state.description,
+            rating: this.state.rating
+        }
+
+        fetch(`${config.API_ENDPOINT}/${bookmark.id}`, {
+            method: 'PATCH',
+            headers: {
+                'Authorization': `Bearer ${config.API_KEY}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(bookmark)
+        })
+            .then(response => {
+                
+                if(response.status === 204) {
+                    console.log('Success!!')
+                }
+            })
+            .catch(error => {
+                this.setState({
+                    error: error
+                })
+            })
+        
+    }
+
+    handleInputChange = (event) => {
+        const target = event.target;
+        const name = target.name;
+        this.setState({
+            [name] : target.value
+        })
+    }
+
     render() {
         const { error, title, url, description, rating } = this.state
         return (
             <section className='EditBookmark'>
                 <h2>Edit Bookmark</h2>
-                <form onSubmit=''>
+                <form onSubmit={this.handleSubmit}>
                     <div className='EditBookmark__error' role='alert'>
                         {error && <p>{error.message}</p>}
                     </div>
@@ -65,6 +106,7 @@ class EditBookmark extends Component {
                             placeholder='Great website!'
                             required
                             value={title}
+                            onChange={this.handleInputChange}
                         />
                     </div>
                     <div>
@@ -80,6 +122,7 @@ class EditBookmark extends Component {
                             placeholder='https://www.great-website.com/'
                             required
                             value={url}
+                            onChange={this.handleInputChange}
                         />
                     </div>
                     <div>
@@ -90,6 +133,7 @@ class EditBookmark extends Component {
                             name='description'
                             id='description'
                             value={description}
+                            onChange={this.handleInputChange}
                         />
                     </div>
                     <div>
@@ -106,10 +150,11 @@ class EditBookmark extends Component {
                             min='1'
                             max='5'
                             required
+                            onChange={this.handleInputChange}
                         />
                     </div>
                     <div className='EditBookmark__buttons'>
-                        <button type='button' >
+                        <button type='button' onClick={this.props.history.goBack}>
                             Cancel
                         </button>
                         {' '}

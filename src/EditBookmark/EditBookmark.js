@@ -66,6 +66,7 @@ class EditBookmark extends Component {
                 
                 if(response.status === 204) {
                     console.log('Success!!')
+                    this.props.history.push('/')
                 }
             })
             .catch(error => {

@@ -82,7 +82,7 @@ class App extends Component {
         <Nav clickPage={this.changePage} />
         <div className='content' aria-live='polite'>
           <Route exact path='/' render={(props) => <BookmarkList bookmarks={bookmarks} />} />
-          <Route path='/add-bookmark' render={(props) => <AddBookmark onAddBookmark={this.addBookmark} />} />
+          <Route path='/add-bookmark' render={(props) => <AddBookmark onAddBookmark={this.addBookmark} goBack={() => props.history.goBack()} />} />
           <Route path='/edit/:bookmarkId' component={EditBookmark} />
         </div>
       </main>

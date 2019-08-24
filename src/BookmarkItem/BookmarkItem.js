@@ -1,9 +1,26 @@
 import React from 'react';
 import Rating from '../Rating/Rating';
 import './BookmarkItem.css';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import config from '../config'
+
+const deleteBookmark = (id) => {
+
+  fetch(`${config.API_ENDPOINT}/${id}`, {
+    method: 'DELETE',
+    headers: {
+      'Authorization': `Bearer ${config.API_KEY}`
+    }
+  }
+  )
+    .then(response => {
+      console.log(response)
+    })
+    .catch(error => console.log(error))
+}
 
 export default function BookmarkItem(props) {
+
   return (
     <li className='BookmarkItem'>
       <div className='BookmarkItem__row'>
@@ -26,7 +43,7 @@ export default function BookmarkItem(props) {
         {'  '}
         <button
           className='BookmarkItem__description'
-          onClick={() => props.onClickDelete(props.id)}
+          onClick={() => deleteBookmark(props.id)}
         >
           Delete
         </button>
